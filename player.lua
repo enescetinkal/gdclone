@@ -7,9 +7,11 @@ local player = {
     xsize = 55,
     ysize = 55,
     yVelocity = 0,
-    jumpForce = -450,
+    jumpForce = -400,
     gravity = 800,
     onGround = false,
+    rotation = 0,
+    rotationSpeed = math.rad(180), --this is for the jumping
 }
 
 function player:update(dt)
@@ -26,6 +28,7 @@ function player:update(dt)
         player.y = ground.y - player.ysize
         player.yVelocity = 0
         player.onGround = true
+        player.rotation = 0
     else
         player.onGround = false
     end
@@ -33,10 +36,18 @@ function player:update(dt)
     if love.keyboard.isDown("space") and player.onGround then
         player.yVelocity = player.jumpForce
     end
+
+    if not player.onGround then
+        player.rotation = player.rotation + player.rotationSpeed * dt
+    end
 end
 
 function player:draw()
-    drawRect(player)
+    love.graphics.push()
+    love.graphics.translate(player.x + player.xsize / 2, player.y + player.ysize / 2)
+    love.graphics.rotate(player.rotation)
+    love.graphics.rectangle("fill", -player.xsize / 2, -player.ysize / 2, player.xsize, player.ysize)
+    love.graphics.pop()
 end
 
 return player

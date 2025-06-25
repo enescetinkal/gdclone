@@ -1,4 +1,8 @@
--- background.lua
+--[[
+    This code is for a background
+    that i wont use for a while.
+    
+]]--
 local Background = {}
 
 function Background:new(starCount, width, height)
