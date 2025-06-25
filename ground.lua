@@ -2,7 +2,7 @@ require("utils")
 
 local ground = {
     x = 0,
-    y = 550,
+    y = 560,
     xsize = 1600,
     ysize = 50,
 }

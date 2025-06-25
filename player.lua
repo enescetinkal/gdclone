@@ -4,8 +4,8 @@ require("utils")
 local player = {
     x = 0,
     y = 540,
-    xsize = 55,
-    ysize = 55,
+    xsize = 32,
+    ysize = 32,
     yVelocity = 0,
     jumpForce = -400,
     gravity = 800,
