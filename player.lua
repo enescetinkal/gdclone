@@ -7,9 +7,10 @@ local player = {
     xsize = 32,
     ysize = 32,
     yVelocity = 0,
-    jumpForce = -400,
+    jumpForce = -350,
     gravity = 800,
     onGround = false,
+    onBlocks = false,
     rotation = 0,
     rotationSpeed = math.rad(180), --this is for the jumping
 }
@@ -29,15 +30,15 @@ function player:update(dt)
         player.yVelocity = 0
         player.onGround = true
         player.rotation = 0
-    else
+    elseif not player.onBlocks then
         player.onGround = false
     end
 
-    if love.keyboard.isDown("space") and player.onGround then
+    if love.keyboard.isDown("space") and (player.onGround or player.onBlocks) then
         player.yVelocity = player.jumpForce
     end
 
-    if not player.onGround then
+    if player.onGround == false or player.onBlocks == false then
         player.rotation = player.rotation + player.rotationSpeed * dt
     end
 end
