@@ -34,7 +34,7 @@ function player:update(dt)
         player.onGround = false
     end
 
-    if love.keyboard.isDown("space") and (player.onGround or player.onBlocks) then
+    if love.keyboard.isDown("space") and (player.onGround == true or player.onBlocks == true) then
         player.yVelocity = player.jumpForce
     end
 

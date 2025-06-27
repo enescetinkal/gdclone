@@ -42,19 +42,18 @@ function obstacleCollision()
 
             if tile.type == 1 then
                 if fromTop then
-                    player.onBlocks = true
                     player.rotation = 0
+                    player.onBlocks = true
                     player.y = tile.y - player.ysize
                     player.yVelocity = 0
                 else
                     love.event.quit("restart")
             end
             elseif tile.type == 2 then
-                love.event.quit("restart")
+            love.event.quit("restart")
             end
-            else
-                player.onBlocks = false
-            end
+        else
+            player.onBlocks = false
         end
     end
 end
