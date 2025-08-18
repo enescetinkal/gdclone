@@ -1,59 +1,53 @@
-require("utils")
-local ground = require("ground")
-local player = require("player")
-local obstacles = require("obstacles")
-camera = require("lib/camera")
+require("src.game")
 
-local obstacleList = obstacles.getList()
+local player = require("src.player")
 
 function love.load()
-    love.graphics.setBackgroundColor(0, 0.45, 1)
-    cam = camera()
-    obstacles:load()
+    player:load()
+
+    Ground = {
+        x = 0,
+        y = 600 - 32,
+        xsize = 1600,
+        ysize = 64
+    }
+    makePhysics(Ground, "static", World, "ground")
+
+    World:setCallbacks(BeginContact, EndContact, PreSolve, PostSolve)
 end
 
 function love.update(dt)
-    player.prevX = player.x
-    player.prevY = player.y
-    
-    player:update(dt)
-    obstacleCollision()
-    
-    ground.x = player.x - 700
-    
-    cam:lookAt(player.x + 300, 300)
+    World:update(dt)
+
+    player:update()
 end
 
 function love.draw()
-    cam:attach()
-        obstacles:draw()
-        player:draw()
-        ground:draw()
-    cam:detach()
+    player:draw()
+    drawPhysics(Ground, "fill")
 end
 
-function obstacleCollision()
-	for _, tile in ipairs(obstacles.getList()) do
-        if checkCollision(player, tile) then
-            local fromTop = player.prevY + player.ysize <= tile.y
-            local fromBottom = player.prevY >= tile.y + tile.ysize
-            local fromLeft = player.prevX + player.xsize <= tile.x
-            local fromRight = player.prevX >= tile.x + tile.ysize
+function BeginContact(a, b, _)
+    local aData, bData = a:getUserData(), b:getUserData()
 
-            if tile.type == 1 then
-                if fromTop then
-                    player.rotation = 0
-                    player.onBlocks = true
-                    player.y = tile.y - player.ysize
-                    player.yVelocity = 0
-                else
-                    love.event.quit("restart")
-            end
-            elseif tile.type == 2 then
-            love.event.quit("restart")
-            end
-        else
-            player.onBlocks = false
-        end
+    if (aData == "player" and bData == "ground") or (bData == "player" and aData == "ground") then
+    	player.isGrounded = true
     end
 end
+
+function EndContact(a, b, _)
+    local aData, bData = a:getUserData(), b:getUserData()
+
+    if (aData == "player" and bData == "ground") or (bData == "player" and aData == "ground") then
+    	player.isGrounded = false
+    end
+end
+
+function PreSolve(a, b, coll)
+
+end
+
+function PostSolve(a, b, coll, normalimpulse, tangentimpulse)
+
+end
+
