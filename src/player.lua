@@ -14,10 +14,10 @@ function player:load()
 end
 
 function player:update()
-    self.body:setLinearVelocity(200, 0)
-    
+    self.body:setLinearVelocity(400, 0)
+
     if love.keyboard.isDown("w") and self.isGrounded then
-    	self.body:applyLinearImpulse(0, -400)
+    	self.body:applyLinearImpulse(0, -2000)
     end
 end
 

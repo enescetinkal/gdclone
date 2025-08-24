@@ -9,22 +9,29 @@ function love.load()
         x = 0,
         y = 600 - 32,
         xsize = 1600,
-        ysize = 64
+        ysize = 64,
     }
     makePhysics(Ground, "static", World, "ground")
 
     World:setCallbacks(BeginContact, EndContact, PreSolve, PostSolve)
+
+    GameCamera = Camera(player.body:getPosition(), 1)
 end
 
 function love.update(dt)
     World:update(dt)
 
     player:update()
+
+    local px, _ = player.body:getPosition()
+    GameCamera:lockPosition(px + 300, 300)
 end
 
 function love.draw()
+    GameCamera:attach()
     player:draw()
     drawPhysics(Ground, "fill")
+    GameCamera:detach()
 end
 
 function BeginContact(a, b, _)
